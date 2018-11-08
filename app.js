@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('./config');
+require('./app/config');
 
 const express = require('express'),
     app = require("express")(),
@@ -13,7 +13,7 @@ const express = require('express'),
 
 
 /******************* Custom Middlewares *******************/
-const logger = require("./helpers/logger");
+const logger = require("./app/helpers/logger");
 // console.log(global);
 
 app.use(boom());
@@ -51,8 +51,8 @@ app.use(allowCrossDomain);
 /***************************************************
     Controllers
 ***************************************************/
-const indexRouter = require('./controllers/index');
-const usersRouter = require('./controllers/users');
+const indexRouter = require('./app/controllers/index');
+const usersRouter = require('./app/controllers/users');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
