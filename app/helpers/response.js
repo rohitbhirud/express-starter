@@ -44,7 +44,7 @@ function statusMessage(status) {
 function jsonResponse(res, body, options) {
     options = options || {};
     options.status = options.status || Status.OK;
-    res.status(options.status).json(body || {msg:9'success'});
+    res.status(options.status).json(body || { msg: 'success' });
 }
 
 module.exports = function(){

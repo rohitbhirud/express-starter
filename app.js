@@ -5,24 +5,27 @@ const express = require('express'),
     app = require("express")(),
     path = require('path'),
     cookieParser = require('cookie-parser'),
-
 /******************* Custom Requires *******************/
     methodOverride = require('method-override'),
     boom = require('express-boom'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose')
+    passport = require('passport');
 
-
-/******************* Custom Middlewares *******************/
+/******************* Local Requires *******************/
 const logger = require("./app/helpers/logger");
-// console.log(global);
+const strategies = require('./app/controllers/auth/strategies');
 
+
+/******************* Middlewares *******************/
 app.use(boom());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'app/public')));
+
+
 
 /***************************************************
     Middleware to support CORS
@@ -48,14 +51,24 @@ const allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
+
+
+/***************************************************
+    Authentication Middlewares Strategies
+***************************************************/
+passport.use(strategies.local);
+
+
+
 /***************************************************
     Controllers
 ***************************************************/
-const indexRouter = require('./app/controllers/index');
-const usersRouter = require('./app/controllers/users');
+const controllers = require("./app/controllers/");
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+/* ******************* Authentication Controllers ******************* */
+app.use(controllers.auth.local);
+
+
 
 /***************************************************
     Mongoose Connect
@@ -70,6 +83,8 @@ mongoose.connect(process.env.MONGOSERVER, {
         console.error(`Error connecting to MongoDB ${error}`);
         process.exit(0);
     });
+
+
 
 /***************************************************
     Default Error Handler

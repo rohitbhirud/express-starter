@@ -8,7 +8,7 @@ const User = Schema ({
 		type :  String,
 		trim : true,
 		unqiue : true,
-		required : true, 
+		required : true,
 	},
 	
 	password : {
@@ -31,6 +31,14 @@ const User = Schema ({
   	}
 
 });
+
+User.methods.validPassword = function( password ) {
+
+	bcrypt.compareSync(password, this.password, function (err, res) {
+		return res == true ? true : false;
+	});
+
+};
 
 module.exports = {
 	User: mongoose.model ( 'user', User) 
