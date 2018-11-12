@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+	  bcrypt = require('bcrypt');
+	  
+const Schema = mongoose.Schema;
 
-Schema = mongoose.Schema;
-
-const User = Schema ({ 
+const UserSchema = new Schema({
 	
 	email : {
 		type :  String,
@@ -29,7 +30,6 @@ const User = Schema ({
 	    type: Date,
 	    default: Date.now()
   	}
-
 });
 
 User.methods.validPassword = function( password ) {
@@ -40,6 +40,5 @@ User.methods.validPassword = function( password ) {
 
 };
 
-module.exports = {
-	User: mongoose.model ( 'user', User) 
-}
+
+module.exports = mongoose.model('User', UserSchema);

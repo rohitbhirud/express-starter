@@ -66,7 +66,7 @@ passport.use(strategies.local);
 const controllers = require("./app/controllers/");
 
 /* ******************* Authentication Controllers ******************* */
-app.use(controllers.auth.local);
+app.use('/auth/', controllers.auth.local);
 
 
 
@@ -91,11 +91,19 @@ mongoose.connect(process.env.MONGOSERVER, {
 ***************************************************/
 app.use((err, req, res, next) => {
 
+    // console.log(res);
+    
+
     if (err.isServer) {
         // log the error...
         console.log(err);
     }
-    return res.status(err.output.statusCode).json(err.output.payload);
+
+    // res.send(res);
+    
+    
+
+    // return res.status(err.output.statusCode).json(err.output.payload);
 });
 
 module.exports = app;

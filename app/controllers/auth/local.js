@@ -4,6 +4,7 @@ const express = require("express"),
       __res = require('../../helpers/response'),
       jwt = require('jsonwebtoken');
 
+/********** Login **********/
 Router.post("/login", (req, res, next) => {
 
     passport.authenticate('local', { session: false }, function(err, user, info) {
@@ -36,6 +37,21 @@ Router.post("/login", (req, res, next) => {
       }
 
     })(req, res, next); 
+});
+
+
+/********** Register **********/
+Router.post("/register", (req, res) => {
+  
+  // register(req.body)
+  //   .then(user => {
+  //     console.log(user);
+  //     __res.ok(user);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   })
+  
 });
 
 module.exports = Router;

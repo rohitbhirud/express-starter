@@ -92,9 +92,11 @@ module.exports = function(){
          * Respond with `404 Not Found` and JSON-encoded error object, `{message:String}`.
          */
         res.notFound = function () {
+            errors = Array.isArray(errors) ? errors : [errors];
 
             res.Boom.notFound(
                 statusMessage(Status.NOT_FOUND),
+                errors
             );
         };
 
