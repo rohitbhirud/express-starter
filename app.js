@@ -1,3 +1,4 @@
+require('module-alias/register');
 require('dotenv').config();
 require('./app/config');
 
@@ -52,7 +53,6 @@ const allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 
 
-
 /***************************************************
     Authentication Middlewares Strategies
 ***************************************************/
@@ -98,7 +98,7 @@ app.use((err, req, res, next) => {
     if (err instanceof SyntaxError) {
         res.boom.badRequest("invalid json");
     } else {
-        res.boom.badImplementation(err.message);
+        res.boom.badRequest(err.message);
     }
 });
 

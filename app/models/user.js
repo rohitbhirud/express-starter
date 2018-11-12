@@ -32,7 +32,7 @@ const UserSchema = new Schema({
   	}
 });
 
-User.methods.validPassword = function( password ) {
+UserSchema.methods.validPassword = function( password ) {
 
 	bcrypt.compareSync(password, this.password, function (err, res) {
 		return res == true ? true : false;
