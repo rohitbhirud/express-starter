@@ -91,19 +91,15 @@ mongoose.connect(process.env.MONGOSERVER, {
 ***************************************************/
 app.use((err, req, res, next) => {
 
-    // console.log(res);
-    
-
     if (err.isServer) {
-        // log the error...
         console.log(err);
     }
 
-    // res.send(res);
-    
-    
-
-    // return res.status(err.output.statusCode).json(err.output.payload);
+    if (err instanceof SyntaxError) {
+        res.boom.badRequest("invalid json");
+    } else {
+        res.boom.badImplementation(err.message);
+    }
 });
 
 module.exports = app;
