@@ -32,6 +32,7 @@ const UserSchema = new Schema({
   	}
 });
 
+// custom method for user model
 UserSchema.methods.validPassword = function( password ) {
 
 	bcrypt.compareSync(password, this.password, function (err, res) {
@@ -40,5 +41,13 @@ UserSchema.methods.validPassword = function( password ) {
 
 };
 
+// Sets the createdAt parameter equal to the current time
+BookSchema.pre('save', next => {
+  now = new Date();
+  if(!this.createdAt) {
+    this.createdAt = now;
+  }
+  next();
+});
 
 module.exports = mongoose.model('User', UserSchema);
