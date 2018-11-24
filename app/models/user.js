@@ -35,7 +35,7 @@ const UserSchema = new Schema({
 // custom method for user model
 UserSchema.methods.validPassword = function( password ) {
 
-	bcrypt.compareSync(password, this.password, function (err, res) {
+	return bcrypt.compareSync(password, this.password, function (err, res) {
 		return res == true ? true : false;
 	});
 
