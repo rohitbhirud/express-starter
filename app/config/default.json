@@ -1,10 +1,11 @@
 {
   "App": {
-    "name": "Meme Station"
+    "name": "Meme Station",
+    "port": 3101
   },
 
   "db": {
   	"host": "localhost",
-  	"database": "meme-station"
+  	"database": "meme-station-dev"
   }
 }

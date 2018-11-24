@@ -25,11 +25,9 @@ app.use(boom());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app/public')));
-
-console.log(config.get('App.name'));
 
 /***************************************************
     Middleware to support CORS
@@ -62,15 +60,14 @@ app.use(allowCrossDomain);
 passport.use(strategies.local);
 
 
-
 /***************************************************
     Controllers
 ***************************************************/
 const controllers = require("./app/controllers/");
 
 /* ******************* Authentication Controllers ******************* */
+app.use('/', controllers.home);
 app.use('/auth/', controllers.auth.local);
-
 
 
 /***************************************************
@@ -104,5 +101,61 @@ app.use((err, req, res, next) => {
         res.boom.badRequest(err.message);
     }
 });
+
+
+/**
+ * Get port from environment.
+ */
+
+var port = config.get('App.port') || '3000';;
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+app.listen(port);
+app.on('error', onError);
+app.on('listening', onListening);
+
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
 
 module.exports = app;
