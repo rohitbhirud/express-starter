@@ -1,0 +1,10 @@
+{
+  "App": {
+    "name": "Meme Station"
+  },
+
+  "db": {
+  	"host": "localhost",
+  	"database": "meme-station"
+  }
+}

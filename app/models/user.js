@@ -42,7 +42,7 @@ UserSchema.methods.validPassword = function( password ) {
 };
 
 // Sets the createdAt parameter equal to the current time
-BookSchema.pre('save', next => {
+UserSchema.pre('save', next => {
   now = new Date();
   if(!this.createdAt) {
     this.createdAt = now;

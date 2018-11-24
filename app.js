@@ -1,6 +1,9 @@
 require('module-alias/register');
 require('dotenv').config();
-require('./app/config');
+
+// set config dir & require it
+process.env.NODE_CONFIG_DIR = './app/config';
+const config = require('config');
 
 const express = require('express'),
     app = require("express")(),
@@ -13,7 +16,7 @@ const express = require('express'),
     passport = require('passport');
 
 /******************* Local Requires *******************/
-const logger = require("./app/helpers/logger");
+// const logger = require("./app/helpers/logger");
 const strategies = require('./app/controllers/auth/strategies');
 
 
@@ -26,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'app/public')));
 
-
+console.log(config.get('App.name'));
 
 /***************************************************
     Middleware to support CORS
@@ -73,7 +76,7 @@ app.use('/auth/', controllers.auth.local);
 /***************************************************
     Mongoose Connect
 ***************************************************/
-mongoose.connect(process.env.MONGOSERVER, {
+mongoose.connect(`mongodb://${config.get('db.host')}/${config.get('db.database')}`, {
         useNewUrlParser: true
     })
     .then(con => {

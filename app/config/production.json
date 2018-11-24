@@ -1,0 +1,4 @@
+{
+	"node_port": 8080,
+    "database": "my-app-db-prod"
+}
