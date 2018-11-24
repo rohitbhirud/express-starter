@@ -50,7 +50,7 @@ Router.post("/register", (req, res) => {
 
   user.save(function(err) {
       if (err)
-          res.boom.notFound(err);
+          return res.boom.unauthorized(err);
 
       res.json({ message: 'User created!' });
   });
