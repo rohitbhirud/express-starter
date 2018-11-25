@@ -52,7 +52,6 @@ describe('User register', () => {
 				.end((err, res) => {
 					expect(res).to.have.status(400);
 					expect(res).to.be.json;
-					console.log(res.body);
 					expect(res.body).to.have.property('message').that.contains('Email');
 					done();
 				});
@@ -77,12 +76,24 @@ describe('User register', () => {
 				});
 
 		});
+		
+		// 4. info validation tests
+		it('expect errors on invalid credentials', (done) => {
+			chai.request(app)
+				.post('/auth/register')
+				.set('content-type', 'application/x-www-form-urlencoded')
+				.send({
+					'email': 'rbhirud7gmail.com',
+					'password': '123456'
+				})
+				.end((err, res) => {
+					expect(res).to.have.status(400);
+					expect(res).to.be.json;
+					expect(res.body).to.have.property('message').that.contains('valid email');
+					done();
+				});
+		});
 	});
 	
-	// 4. info validation tests
-
-
-
-
 
 });

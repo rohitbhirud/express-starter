@@ -99,7 +99,7 @@ app.use((err, req, res, next) => {
     
     // return errors if validation fails
     if (err.name == 'ValidationError' && err.isJoi ) {
-      console.log(err.details);
+      // console.log(err.details);
       return res.boom.badRequest(err.details[0].message);
     }
 
