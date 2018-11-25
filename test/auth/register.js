@@ -7,15 +7,24 @@ const User = require('@app/models/User');
 
 chai.use(chaiHttp);
 
-before(function(done) {
-	User.deleteMany({}, err => {
-		if (err) console.log(err);
-	});
-
-	done();
-})
 
 describe('User register', () => {
+
+	before(function(done) {
+		User.deleteMany({}, err => {
+			if (err) console.log(err);
+		});
+
+		done();
+	});
+
+	after(function(done) {
+		User.deleteMany({}, err => {
+			if (err) console.log(err);
+		});
+
+		done();
+	});
 
 	describe('Register success', () => {
 		// 1. success registration
@@ -25,7 +34,7 @@ describe('User register', () => {
 				.post('/auth/register')
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({
-					'email': 'rbhirud7@gmail.com',
+					'email': 'rohit@gmail.com',
 					'password': '111111'
 				})
 				.end((err, res) => {
@@ -65,7 +74,7 @@ describe('User register', () => {
 				.post('/auth/register')
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({
-					'email': 'rbhirud7@gmail.com',
+					'email': 'rohit@gmail.com',
 					'password': '123456'
 				})
 				.end((err, res) => {
@@ -83,7 +92,7 @@ describe('User register', () => {
 				.post('/auth/register')
 				.set('content-type', 'application/x-www-form-urlencoded')
 				.send({
-					'email': 'rbhirud7gmail.com',
+					'email': 'rohitgmail.com',
 					'password': '123456'
 				})
 				.end((err, res) => {
