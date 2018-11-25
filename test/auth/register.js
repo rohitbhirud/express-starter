@@ -18,14 +18,6 @@ describe('User register', () => {
 		done();
 	});
 
-	after(function(done) {
-		User.deleteMany({}, err => {
-			if (err) console.log(err);
-		});
-
-		done();
-	});
-
 	describe('Register success', () => {
 		// 1. success registration
 		it('expects user to register successfully', (done) =>{
@@ -68,7 +60,7 @@ describe('User register', () => {
 		});
 
 		// 3. fail on duplicate email
-		it('expects errors on duplicate email', (done) => {
+		it('expects errors on user already exists', (done) => {
 
 			chai.request(app)
 				.post('/auth/register')
