@@ -12,8 +12,10 @@ const express = require('express'),
 /******************* Custom Requires *******************/
     methodOverride = require('method-override'),
     boom = require('express-boom'),
-    mongoose = require('mongoose')
-    passport = require('passport');
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    { errors, isCelebrate } = require('celebrate');
+
 
 /******************* Local Requires *******************/
 // const logger = require("./app/helpers/logger");
@@ -70,6 +72,10 @@ app.use('/', controllers.home);
 app.use('/auth/', controllers.auth.local);
 
 
+// app.use(errors((err, req, res, next) => {
+//   console.log(err);
+// }));
+
 /***************************************************
     Mongoose Connect
 ***************************************************/
@@ -90,9 +96,11 @@ mongoose.connect(`mongodb://${config.get('db.host')}/${config.get('db.database')
     Default Error Handler
 ***************************************************/
 app.use((err, req, res, next) => {
-
-    if (err.isServer) {
-        console.log(err);
+    
+    // return errors if validation fails
+    if (err.name == 'ValidationError' && err.isJoi ) {
+      console.log(err.details);
+      return res.boom.badRequest(err.details[0].message);
     }
 
     if (err instanceof SyntaxError) {

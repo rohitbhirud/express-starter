@@ -3,7 +3,17 @@ let chaiHttp = require('chai-http');
 let app = require('../../app');
 let expect = chai.expect;
 
+const User = require('@app/models/User');
+
 chai.use(chaiHttp);
+
+before(function(done) {
+	User.deleteMany({}, err => {
+		if (err) console.log(err);
+	});
+
+	done();
+})
 
 describe('User register', () => {
 
@@ -40,15 +50,33 @@ describe('User register', () => {
 					'password': '11111'
 				})
 				.end((err, res) => {
-					expect(res).to.have.status(401);
+					expect(res).to.have.status(400);
 					expect(res).to.be.json;
-					expect(res.body).to.include({ "error": "Unauthorized" });
+					console.log(res.body);
+					expect(res.body).to.have.property('message').that.contains('Email');
 					done();
 				});
 
 		});
 
 		// 3. fail on duplicate email
+		it('expects errors on duplicate email', (done) => {
+
+			chai.request(app)
+				.post('/auth/register')
+				.set('content-type', 'application/x-www-form-urlencoded')
+				.send({
+					'email': 'rbhirud7@gmail.com',
+					'password': '123456'
+				})
+				.end((err, res) => {
+					expect(res).to.have.status(400);
+					expect(res).to.be.json;
+					expect(res.body).to.include({ "message": "User already exists" });
+					done();
+				});
+
+		});
 	});
 	
 	// 4. info validation tests

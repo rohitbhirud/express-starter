@@ -10,6 +10,7 @@
     "bcrypt": "^3.0.2",
     "bunyan": "^1.8.12",
     "bunyan-rotating-file-stream": "^1.6.3",
+    "celebrate": "^9.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",
