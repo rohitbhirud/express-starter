@@ -18,6 +18,36 @@ const UserSchema = new Schema({
 		trim:true
 	},
 
+	username: {
+		type: String,
+		trim: true
+	},
+
+	profile: {
+		avatar: {
+			type: String,
+			default: ''
+		},
+
+		gender: {
+			type: String,
+			default: 'male'
+		},
+
+		birthday: {
+			type: Date
+		},
+
+		country: {
+			type: String,
+			default: 'india'
+		},
+
+		bio: {
+			type: String
+		}
+	},
+
 	token : {
 		type : String
 	},

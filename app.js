@@ -70,6 +70,7 @@ const controllers = require("./app/controllers/");
 /* ******************* Authentication Controllers ******************* */
 app.use('/', controllers.home);
 app.use('/auth/', controllers.auth.local);
+app.use('/app/v1/', controllers.profile);
 
 
 // app.use(errors((err, req, res, next) => {
