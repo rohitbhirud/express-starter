@@ -1,14 +1,32 @@
 const express = require("express"),
       Router  = express.Router(),
       { celebrate, Joi } = require('celebrate'),
+      { ObjectId } = require('mongodb'),
       userSchema = require('@app/models/validation/user');
 
 
 const User = require('@app/models/User');
 
-/********** Login **********/
-Router.put("/profile/:id", (req, res, next) => {
-  console.log(req.params.id);
+/********** Get Profile Data **********/
+Router.get("/profile/:id", (req, res) => {
+  const userId = req.params.id;
+
+  // check of userid is valid
+  if (!ObjectId.isValid(userId)) {
+    return res.boom.badRequest('Invalid id or malformed id');
+  }
+
+  // check if user exists
+  User.findOne(
+    { _id: userId },
+    { password: 0 }
+    )
+    .then(user => {
+      if (user === null) return res.boom.notFound('User not found');
+
+      res.message("success", user);
+    })
+  // get user data
 });
 
 

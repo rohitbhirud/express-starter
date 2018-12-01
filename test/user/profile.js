@@ -14,15 +14,14 @@ describe('User login', () => {
 
 	before((done) => {
 		// login user with jwt token
-		user = helper.getLoggedInUser();
-
-		user.then((data) => {
-			console.log(data);
+		helper.getLoggedInUser().then((data) => {
+			user = data;
+			done();
 		})
 		.catch((err) => {
 			throw err;
+			done();
 		});
-		done();
 	});
 
 	// 1. get user  profile info
@@ -30,13 +29,16 @@ describe('User login', () => {
 	it('get user profile info', (done) =>{
 			
 		chai.request(app)
-			.put('/app/v1/profile/' + user._id)
+			.get('/api/v1/profile/' + user.userId)
 			.set('content-type', 'application/x-www-form-urlencoded')
-			.send({})
+			.set('x-access-token', user.token)
 			.end((err, res) => {
 				expect(res).to.have.status(200);
 				expect(res).to.be.json;
-				// expect(res.body).to.have.property('message');
+				expect(res.body).to.have.property('message').that.contains('success');
+				expect(res.body).to.have.property('data');
+				expect(res.body).to.have.nested.property('data.profile');
+				expect(res.body).to.have.nested.property('data._id');
 				done();
 			});
 
