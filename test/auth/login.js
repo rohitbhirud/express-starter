@@ -24,7 +24,7 @@ describe('User login', () => {
 	});
 
 
-	// 1. success registration
+	// 1. success login
 	it('expects user to login successfully', (done) =>{
 			
 		chai.request(app)
@@ -45,7 +45,6 @@ describe('User login', () => {
 			});
 
 	});
-
 
 	// 2. error on invalid creds
 	it('expects errors on invalid creds', (done) =>{
