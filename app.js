@@ -11,6 +11,7 @@ const express = require('express'),
     cookieParser = require('cookie-parser'),
 /******************* Custom Requires *******************/
     methodOverride = require('method-override'),
+    jwt = require('jsonwebtoken'),
     boom = require('express-boom'),
     mongoose = require('mongoose'),
     passport = require('passport'),
@@ -55,6 +56,26 @@ const allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
+/***************************************************
+    JWT Athentication Middleware
+***************************************************/
+app.use('/api/v1/', (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res.boom.unauthorized('No token provided');
+  }
+
+  const SECRET = process.env.TOKENSECRET;
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if (err) 
+      return res.boom.unauthorized('Invalid token');
+
+    if (!decoded || decoded.id !== req.body.id)
+      return res.boom.unauthorized('Invalid userId or userId not present');
+
+    next();
+  });
+});
 
 /***************************************************
     Authentication Middlewares Strategies
@@ -67,15 +88,11 @@ passport.use(strategies.local);
 ***************************************************/
 const controllers = require("./app/controllers/");
 
-/* ******************* Authentication Controllers ******************* */
+/****** Authentication Controllers ******/
 app.use('/', controllers.home);
 app.use('/auth/', controllers.auth.local);
-app.use('/app/v1/', controllers.profile);
+app.use('/api/v1/', controllers.profile);
 
-
-// app.use(errors((err, req, res, next) => {
-//   console.log(err);
-// }));
 
 /***************************************************
     Mongoose Connect
