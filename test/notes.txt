@@ -1,0 +1,38 @@
+meme station
+	test cases
+		user :
+			user can register
+				register success
+				missing reequired inputs
+				invalid input data
+				user already exists
+				
+			user can login
+				login success
+				valid token
+				invalid creds
+				missing creds
+				user not exists
+				
+			user have profile
+				valid jwt token
+				missing jwt token
+				user exists
+				user can 
+					get profile info
+					update profile info
+					update profile w/ minimum info
+					validate input data
+					missing required input
+					
+		meme :
+			user can 
+				create a meme
+				delete a meme
+			
+			memes :
+				get all memes
+				get single meme
+				can have an creator
+				get single meme creator
+				
