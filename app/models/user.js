@@ -23,29 +23,27 @@ const UserSchema = new Schema({
 		trim: true
 	},
 
-	profile: {
-		avatar: {
-			type: String,
-			default: ''
-		},
+	avatar: {
+		type: String,
+		default: ''
+	},
 
-		gender: {
-			type: String,
-			default: 'male'
-		},
+	gender: {
+		type: String,
+		default: 'male'
+	},
 
-		birthday: {
-			type: Date
-		},
+	birthday: {
+		type: Date
+	},
 
-		country: {
-			type: String,
-			default: 'india'
-		},
+	country: {
+		type: String,
+		default: 'india'
+	},
 
-		bio: {
-			type: String
-		}
+	bio: {
+		type: String
 	},
 
 	token : {

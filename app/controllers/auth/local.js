@@ -47,8 +47,6 @@ Router.post("/register", celebrate({
   body: userSchema
 }), (req, res) => {
 
-
-
   // check if user already exists
   _findUser( req.body.email )
     .then( oldUser => {

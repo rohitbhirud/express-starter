@@ -26,45 +26,41 @@ Router.get("/profile/:id", (req, res) => {
 
       res.message("success", user);
     })
-  // get user data
+    .catch(err => {
+      res.boom.badRequest("error getting user.", err);
+    });
 });
 
-
-/********** Register **********/
-Router.post("/register", celebrate({
+/********** Update Profile Data **********/
+Router.put("/profile/:id", celebrate({
   body: userSchema
 }), (req, res) => {
+  const userId = req.params.id;
 
+  // check of userid is valid
+  if (!ObjectId.isValid(userId)) {
+    return res.boom.badRequest('Invalid id or malformed id');
+  }
 
+  const user = req.body;
 
-  // check if user already exists
-  _findUser( req.body.email )
-    .then( oldUser => {
-      if(oldUser !== null){
-        return Promise.reject('User already exists');
-      }
-      
-      let user = new User({
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10)
-      });
+  let update = {
+    $set: user
+  };
 
-      user.save(function(err) {
-          if (err)
-              return Promise.reject(err);
+  User.findOneAndUpdate(
+    { _id: userId },
+    update,
+    { new: true, projection: { password: 0 } })
+    .then(user => {
+      if (!user) return res.boom.notFound('User not found');
 
-          res.json({ message: 'User created!' });
-      });
+      res.message("success", user);
     })
-    .catch( err => {
-      res.boom.badRequest(err);
+    .catch(err => {
+      res.boom.badRequest("error updating user.", err);
     });
-
 });
 
-const _findUser = ( email ) => {
-  let query = { email : email };
-  return User.findOne( query );
-}
 
 module.exports = Router;

@@ -8,7 +8,7 @@ const User = require('@app/models/User');
 
 chai.use(chaiHttp);
 
-describe('User login', () => {
+describe('User Profile', () => {
 
 	let user = {};
 
@@ -25,7 +25,6 @@ describe('User login', () => {
 	});
 
 	// 1. get user  profile info
-	// get user profile info
 	it('get user profile info', (done) =>{
 			
 		chai.request(app)
@@ -37,17 +36,53 @@ describe('User login', () => {
 				expect(res).to.be.json;
 				expect(res.body).to.have.property('message').that.contains('success');
 				expect(res.body).to.have.property('data');
-				expect(res.body).to.have.nested.property('data.profile');
 				expect(res.body).to.have.nested.property('data._id');
 				done();
 			});
 
 	});
-	// 2. error on invalid token
-	// 3. error on missing token
-	// 4. update user profile
-	// 5. update user with limited info
-	// 6. validate user info
-	// 7. error on invalid or missing inputs
+
+	// 2. update user profile
+	it('updates user profile info', (done) =>{
+			
+		chai.request(app)
+			.put('/api/v1/profile/' + user.userId)
+			.set('content-type', 'application/x-www-form-urlencoded')
+			.set('x-access-token', user.token)
+			.send({
+				username: "joe"
+			})
+			.end((err, res) => {
+				expect(res).to.have.status(200);
+				expect(res).to.be.json;
+				expect(res.body).to.have.property('message').that.contains('success');
+				expect(res.body).to.have.property('data');
+				expect(res.body).to.have.nested.property('data.username');
+				expect(res.body).to.have.nested.property('data._id');
+				expect(res.body).not.to.have.nested.property('data.password');
+				done();
+			});
+
+	});
+
+	// 3. error on invalid or missing inputs
+	it('expect error on invalid inputs', (done) =>{
+			
+		chai.request(app)
+			.put('/api/v1/profile/' + user.userId)
+			.set('content-type', 'application/x-www-form-urlencoded')
+			.set('x-access-token', user.token)
+			.send({
+				lol: "joe"
+			})
+			.end((err, res) => {
+				expect(res).to.have.status(400);
+				expect(res).to.be.json;
+				expect(res.body).to.have.property('message').that.contains('not allowed');
+				expect(res.body).to.have.property('error');
+				done();
+			});
+
+	});
 
 });

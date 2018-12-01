@@ -1,13 +1,13 @@
 meme station
 	test cases
 		user :
-			user can register
+			user can register ++
 				register success
 				missing reequired inputs
 				invalid input data
 				user already exists
 				
-			user can login
+			user can login ++
 				login success
 				valid token
 				invalid creds
