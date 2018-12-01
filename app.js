@@ -57,6 +57,27 @@ const allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 
 /***************************************************
+  Custom Response Middleware
+***************************************************/
+app.use(function (req, res, next) {
+  res.message = function (message = "success", data = null, status = 200) {
+    let response = {
+      "statusCode": status,
+      "message": message
+    };
+
+    if (data) {
+      response.data = data;
+    }
+
+    return res.json(response);
+  };
+
+  next();
+})
+
+
+/***************************************************
     JWT Athentication Middleware
 ***************************************************/
 app.use('/api/v1/', (req, res, next) => {
